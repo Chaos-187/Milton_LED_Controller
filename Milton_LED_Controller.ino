@@ -14,15 +14,14 @@ FASTLED_USING_NAMESPACE
 #define BTN2_PIN  7
 int BTN1_val = 0;
 int BTN1_lastButtonState = HIGH;   // the previous reading from the input pin
-unsigned long BTN1_lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long BTN1_debounceDelay = 50;    // the debounce time; increase if the output flickers
+
 
 int BTN2_val = 0;
 int BTN2_lastButtonState = HIGH;   // the previous reading from the input pin
-unsigned long BTN2_lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long BTN2_debounceDelay = 50;    // the debounce time; increase if the output flickers
 
-int ledState = HIGH;
+
+
+
 
 //#define CLK_PIN   4
 #define LED_TYPE    WS2812B
@@ -86,40 +85,29 @@ void loop() {
 
 
 //######################SPECIAL CODE
-  int BTN1_reading = digitalRead(BTN1_PIN);
+  
+if (BTN1_lastButtonState == BTN1_val){
+  //DO NOTHING
+}else
+{
+  //Serial.print("Value 2 = ");
+  
+  nextPattern();
+  
+}
+BTN1_lastButtonState = BTN1_val;
 
-    // If the switch changed, due to noise or pressing:
-  if (BTN1_reading != BTN1_lastButtonState) {
-    // reset the debouncing timer
-    BTN1_lastDebounceTime = millis();
-  }
-//Serial.print("READING");
-//Serial.println(BTN1_val);
-//Serial.print("LAST STATE");
-//Serial.println(BTN1_lastButtonState);
-  if ((millis() - BTN1_lastDebounceTime) > BTN1_debounceDelay) {
-    
-    // if the button state has changed:
-    if (BTN1_reading != BTN1_val) {
-      BTN1_val = BTN1_reading;
+if (BTN2_lastButtonState == BTN2_val){
+  //DO NOTHING
+}else
+{
+  //Serial.print("Value 2 = ");
+  
+  FastLED.clear();
+  
+}
+BTN2_lastButtonState = BTN2_val;
 
-      // only toggle the LED if the new button state is HIGH
-      if (BTN1_val == 0) {
-        ledState = !ledState;
-      }
-    }
-  }
-
- if(ledState==HIGH){
-
- }
- else{
-  Serial.println("TEST");
- }
-//DO SOME SHIT
-
-  // save the reading. Next time through the loop, it'll be the lastButtonState:
-  BTN1_lastButtonState = BTN1_reading;
 
 //######################SPECIAL CODE
 
@@ -144,14 +132,18 @@ void serialEvent() {
     switch (myString) {
       case 48:
       Serial.println("You Pressed 0 ");
+       
+      
       break;
       
       case 49:
       Serial.println("You Pressed 1");
+       
       break;
       
       case 50:
       Serial.println("You Pressed 2");
+      ;
       break;
       
       case 51:
