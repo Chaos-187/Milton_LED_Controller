@@ -1,0 +1,6 @@
+Button1 = PinD6 
+Button2 = PinD7
+
+LEDS = PinD3
+
+5V to Vin
